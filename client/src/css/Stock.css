@@ -1,0 +1,82 @@
+/* Stock.css */
+
+.stock {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+table {
+  margin: 0.75em 0;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: black;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+.add-product,
+.add-quantity,
+.delete-product {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.add-product input,
+.add-quantity input,
+.delete-product input,
+.delete-product select,
+div.search input {
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.add-product button,
+.add-quantity button,
+.delete-product button,
+.toggle-buttons button.active,
+tr button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-product button:hover,
+.add-quantity button:hover,
+.delete-product button:hover,
+.toggle-buttons button,
+tr button:hover {
+  background-color: white;
+  color: black;
+}
+
+.toggle-buttons {
+  margin: 0.25em auto;
+}
