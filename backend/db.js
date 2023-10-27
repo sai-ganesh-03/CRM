@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const dbURI = "mongodb://localhost:27017/inventory"; // Replace with your MongoDB URI and database name
+const dbURI = "mongodb://localhost:27017/storedb"; // Replace with your MongoDB URI and database name
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 

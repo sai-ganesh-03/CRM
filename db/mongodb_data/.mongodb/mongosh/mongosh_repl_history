@@ -1,0 +1,10 @@
+db.bills.find()
+db.getCollectionNames()
+db.Bills.find()
+storedb.Bills.find()
+use storedb
+show dbs
+use dbs
+show dbs
+use admin
+show dbs

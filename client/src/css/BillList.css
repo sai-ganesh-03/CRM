@@ -1,0 +1,85 @@
+/* BillList.css */
+
+.bill-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+table {
+  margin: 0.75em 0;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: black;
+  color: white;
+}
+
+/* Striped background for even rows */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+}
+/* Modal */
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .bill-list {
+    padding: 10px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .bill-list {
+    padding: 5px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 5px;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/Stock.css";
-
 function Stock() {
+  const apiUri = "http://localhost:4000";
   // const initialData = [
   //   {
   //     _id: "652ba0e6e6fa136064f90dad",
@@ -47,7 +47,7 @@ function Stock() {
 
   useEffect(() => {
     // Fetch initial data from the backend API
-    fetch("http://localhost:4000/" + curCompanyName + "/products")
+    fetch(`${apiUri}/${curCompanyName}/products`)
       .then((response) => response.json())
       .then((data) => {
         // Sort the data by category as before
@@ -95,7 +95,7 @@ function Stock() {
         company: curCompanyName,
       };
 
-      fetch("http://localhost:4000/products", {
+      fetch(`${apiUri}/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ function Stock() {
 
   const handleDeleteProduct = () => {
     // Send a delete request to the backend to delete the product with the given ID
-    fetch(`http://localhost:4000/products/${selectedProductToDelete}`, {
+    fetch(`${apiUri}/products/${selectedProductToDelete}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -144,7 +144,7 @@ function Stock() {
   const handleAddQuantity = (productId) => {
     // Send a PUT (or PATCH) request to the backend to update the quantity of the product with the given ID
     const updatedQuantity = inputValues[productId];
-    fetch(`http://localhost:4000/products/${productId}`, {
+    fetch(`${apiUri}/products/${productId}`, {
       method: "PUT", // Use PUT or PATCH depending on your API design
       headers: {
         "Content-Type": "application/json",

@@ -2,100 +2,119 @@
 
 /* Common styles for all screen sizes */
 .billing {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
+.billHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 table {
-    margin: 0.75em 0;
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
+  margin: 0.75em 0;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
 }
 
-table, th, td {
-    border: 1px solid black;
+table,
+th,
+td {
+  border: 1px solid black;
 }
 
-th, td {
-    padding: 10px;
-    text-align: center;
+th,
+td {
+  padding: 10px;
+  text-align: center;
 }
 
 th {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 /* Striped background for even rows */
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 tr:nth-child(odd) {
-    background-color: white;
+  background-color: white;
 }
 
 .add-product {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .add-product input {
-    margin-right: 10px;
-    padding: 5px;
-    border: 1px solid black;
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid black;
 }
 
-.add-product button {
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+.add-product button,
+.generate-bill button,
+.billHeader a {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-.add-product button:hover {
-    background-color: white;
-    color: black;
+.add-product button:hover,
+.generate-bill button:hover,
+.billHeader a:hover {
+  background-color: white;
+  color: black;
 }
-
+div.generate-bill {
+  text-align: right;
+}
+div.generate-bill button {
+  font-size: 1em;
+}
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-    .billing {
-        padding: 10px;
-    }
+  .billing {
+    padding: 10px;
+  }
 
-    table {
-        font-size: 14px;
-    }
+  table {
+    font-size: 14px;
+  }
 
-    th, td {
-        padding: 8px;
-    }
+  th,
+  td {
+    padding: 8px;
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .billing {
-        padding: 5px;
-    }
+  .billing {
+    padding: 5px;
+  }
 
-    table {
-        font-size: 12px;
-    }
+  table {
+    font-size: 12px;
+  }
 
-    th, td {
-        padding: 5px;
-    }
+  th,
+  td {
+    padding: 5px;
+  }
 
-    .add-product {
-        flex-direction: column;
-    }
+  .add-product {
+    flex-direction: column;
+  }
 
-    .add-product input {
-        margin: 5px 0;
-    }
+  .add-product input {
+    margin: 5px 0;
+  }
 }
-

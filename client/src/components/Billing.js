@@ -1,97 +1,229 @@
 import React, { useState } from "react";
-import "../css/Billing.css"; // Make sure to import the associated CSS file
+import { Link } from "react-router-dom";
+import axios from "axios";
+import "../css/Billing.css";
 
-function Billing() {
-  const [cart, setCart] = useState([]);
+const Billing = () => {
+  const [serialNumber, setSerialNumber] = useState("");
   const [customerName, setCustomerName] = useState("");
-  const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [customerGST, setCustomerGST] = useState("");
+  const [date, setDate] = useState("");
+  const [products, setProducts] = useState([
+    { category: "", name: "", price: 0, quantity: 0, subTotal: 0 },
+  ]);
+  const [curCompanyToggle, setCurCompanyToggle] = useState(true);
+  const [curCompanyName, setCurCompanyName] = useState("S.A.N_FIBRE_&_Co");
 
-  const handleAddToCart = () => {
-    if (customerName && productName && quantity > 0 && productPrice > 0) {
-      const product = {
-        customer: customerName,
-        name: productName,
-        quantity: quantity,
-        price: productPrice,
-        subtotal: quantity * productPrice,
-      };
-      setCart([...cart, product]);
-      setCustomerName("");
-      setProductName("");
-      setQuantity("");
-      setProductPrice("");
-      // Recalculate the total price
-      calculateTotalPrice([...cart, product]);
+  const handleAddProduct = () => {
+    setProducts((prevProducts) => [
+      ...prevProducts,
+      { category: "", name: "", price: 0, quantity: 0, subTotal: 0 },
+    ]);
+  };
+
+  const handleProductChange = (index, field, value) => {
+    setProducts((prevProducts) => {
+      const updatedProducts = [...prevProducts];
+      if (field === "quantity") {
+        updatedProducts[index].quantity = parseInt(value, 10);
+        updatedProducts[index].subTotal =
+          updatedProducts[index].quantity * updatedProducts[index].price;
+      } else if (field === "name") {
+        updatedProducts[index].name = value;
+      } else if (field === "category") {
+        updatedProducts[index].category = value;
+      } else if (field === "price") {
+        updatedProducts[index].price = parseFloat(value);
+        updatedProducts[index].subTotal =
+          updatedProducts[index].quantity * updatedProducts[index].price;
+      }
+      return updatedProducts;
+    });
+  };
+
+  const handleSerialNumberChange = (e) => {
+    setSerialNumber(e.target.value);
+  };
+
+  const handleCustomerNameChange = (e) => {
+    setCustomerName(e.target.value);
+  };
+  const handleCustomerGSTChange = (e) => {
+    setCustomerGST(e.target.value);
+  };
+
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+
+  const calculateTotal = () => {
+    return products.reduce((total, product) => total + product.subTotal, 0);
+  };
+
+  const generateBill = async () => {
+    const billData = {
+      serialNumber,
+      customerName,
+      date,
+      customerGST,
+      products,
+      company: curCompanyName,
+      total: calculateTotal(),
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/generateBill",
+        billData
+      );
+      console.log("Bill generated successfully:", response.data);
+      // Clear the inputs and reset the products to an initial state
+      // setSerialNumber("");
+      // setCustomerName("");
+      // setDate("");
+      // setProducts([
+      //   { category: "", name: "", price: 0, quantity: 0, subTotal: 0 },
+      // ]);
+      alert("Bill generated");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error generating bill:", error);
+      alert("Failed");
     }
   };
 
-  const calculateTotalPrice = (cart) => {
-    const total = cart.reduce((acc, product) => acc + product.subtotal, 0);
-    setTotalPrice(total);
+  const handleCurCompanyToggle = (e) => {
+    setCurCompanyName(e.target.innerText);
+    setCurCompanyToggle(!curCompanyToggle);
   };
-
   return (
     <div className="billing">
-      <h1>Billing System</h1>
-      <div className="add-product">
-        <input
-          type="text"
-          placeholder="Customer Name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-        />
-        <input
-          type="number"
-          placeholder="Product Price"
-          value={productPrice}
-          onChange={(e) => setProductPrice(parseFloat(e.target.value) || 0)}
-        />
-        <button onClick={handleAddToCart}>Add to Cart</button>
+      <div className="billHeader">
+        <h1>Generate Bill</h1>
+        <Link to="/billing/list">All Bills</Link>
       </div>
+      <div className="toggle-buttons">
+        <button
+          className={curCompanyToggle ? "active" : ""}
+          onClick={handleCurCompanyToggle}
+        >
+          S.A.N_FIBRE_&_Co
+        </button>
+        <button
+          className={!curCompanyToggle ? "active" : ""}
+          onClick={handleCurCompanyToggle}
+        >
+          SANIT_Windows
+        </button>
+      </div>
+      <h2>{curCompanyName}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>Customer Name</th>
+            <th>Date</th>
+            <th>Customer GST</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Serial Number"
+                onChange={handleSerialNumberChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="Customer Name"
+                onChange={handleCustomerNameChange}
+              />
+            </td>
+            <td>
+              <input type="date" onChange={handleDateChange} />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="Customer GST"
+                onChange={handleCustomerGSTChange}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <table>
         <thead>
           <tr>
-            <th>Customer Name</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
+            <th>HSN/SAC</th>
+            <th>Product</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
-          {cart.map((item, index) => (
+          {products.map((product, index) => (
             <tr key={index}>
-              <td>{item.customer}</td>
-              <td>{item.name}</td>
-              <td>{item.quantity}</td>
-              <td>₹{item.price.toFixed(2)}</td>
-              <td>₹{item.subtotal.toFixed(2)}</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Category"
+                  onChange={(e) =>
+                    handleProductChange(index, "category", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Product Name"
+                  onChange={(e) =>
+                    handleProductChange(index, "name", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="Price"
+                  onChange={(e) =>
+                    handleProductChange(index, "price", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  onChange={(e) =>
+                    handleProductChange(index, "quantity", e.target.value)
+                  }
+                />
+              </td>
+              <td>₹{product.subTotal.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      <div className="add-product">
+        <button onClick={handleAddProduct}>Add Product</button>
+      </div>
+
       <div className="total">
-        <strong>Total Price:</strong>₹{totalPrice.toFixed(2)}
+        <h2>Total: ₹{calculateTotal().toFixed(2)}</h2>
+      </div>
+
+      <div className="generate-bill">
+        <button onClick={generateBill}>Generate Bill</button>
       </div>
     </div>
   );
-}
+};
 
 export default Billing;
